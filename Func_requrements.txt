@@ -1,0 +1,15 @@
+User roles
+
+User
+add reviews to Car, add Cars to own cart choosing a provider and crate order from products inside his/her cart, serch in parametrs
+
+Provider
+CRUD own products list (Cars that he/she provided)
+
+Admin
+CRUD Cars, users, orders, reviews, categories and authors, can add coupons to users
+that add discount to all buys
+
+
+User authorization
+Logging of user actions

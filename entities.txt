@@ -1,0 +1,52 @@
+User:
++ Id:           int           <pk> 
++ Login:        varchar(64)
++ Password:     varchar(64)
++ Name:         varchar(64)
++ RoleId:                     <fk ->(OTM) Role>
+
+
+Role:
++ Id            int           <pk>
++ Name:         varchar(64)
+
+
+Cart:
++ Id:           int           <pk>
++ UserId                      <fk ->(OTO) User>     
+
+
+Provider:
++ UserPtr                     <pk> & <fk ->(OTM) User>
+
+
+
+Coupon:
++ Id:           int           <pk> 
++ Discount:     number        
+
+
+Car:
++ Id:           int           <pk> 
++ Title:        varchar(64)
++ BrandId:                    <fk ->(OTM) Author>
++ CategoryId:                 <fk ->(OTM) Category>
+
+Categoty:
++Id :       int           <pk>
++Name
+
+Order:
++ Id:           int           <pk> 
++ Count:        number
++ CarId:                      <fk ->(OTM) Car>
++ UserId:                     <fk ->(OTM) User>
+
+
+
+Review:
++ Id:           int           <pk> 
++ Title:        varchar
++ Text:         varchar          
++ CarId:                      <fk ->(OTM) Car>
++ UserId:                     <fk ->(OTM) User>
