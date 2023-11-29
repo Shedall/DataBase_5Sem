@@ -17,6 +17,18 @@ SELECT
     LEFT JOIN Brand a ON b.brandId = a.Id
     
     WHERE LOWER(a.Name) = LOWER("car brend");--mercedes
+    
+
+
+--Select Cars by a specific Categories.
+SELECT
+    b.Id,
+    b.Name
+
+    FROM Cars b 
+    JOIN Categories a ON b.CategoriesId = a.Id
+    
+    WHERE LOWER(a.Name) = LOWER("Categories name");--Sedan
 
 
 --Select users that have specific car in a cart.
