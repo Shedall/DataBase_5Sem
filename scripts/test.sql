@@ -1,4 +1,0 @@
---select * from select_car_by_category('Sedan');
---call add_car_to_cart(1,1);
---Call add_provider_to_car(4,4);
---call add_order(2);

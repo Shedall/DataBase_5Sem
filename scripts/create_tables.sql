@@ -1,90 +1,107 @@
-CREATE TABLE Roles (
-    Id           INTEGER          PRIMARY KEY,        
-    Name         VARCHAR (64)     NOT NULL UNIQUE
-);
-
-CREATE TABLE Coupons (
-    Id           INTEGER          PRIMARY KEY ,        
-    Discount     REAL             NOT NULL UNIQUE
+CREATE TABLE roles (
+    id           SERIAL           PRIMARY KEY,        
+    name         VARCHAR (64)     NOT NULL UNIQUE
 );
 
 
-CREATE TABLE Users (
-    Id           INTEGER          PRIMARY KEY ,
-    Login        VARCHAR (64)     NOT NULL UNIQUE,
-    Password     VARCHAR (64)     NOT NULL,	
-    Name         VARCHAR (64)     NOT NULL UNIQUE,
-    RoleId       INTEGER          REFERENCES Roles (Id) ON DELETE SET NULL,
-    CouponId     INTEGER          REFERENCES Coupons (Id) ON DELETE SET NULL
-);
-
-CREATE TABLE Carts (
-    Id           INTEGER          PRIMARY KEY ,        
-    UserId       INTEGER          NOT NULL UNIQUE REFERENCES Users (Id) ON DELETE CASCADE
+CREATE TABLE coupons (
+    id           SERIAL           PRIMARY KEY,        
+    discount     REAL             NOT NULL UNIQUE
 );
 
 
-CREATE TABLE Providers (
-    UserPtr      INTEGER          PRIMARY KEY REFERENCES Users (Id) ON DELETE CASCADE
-);
-
-CREATE TABLE Categories (
-    Id           INTEGER          PRIMARY KEY ,        
-    Name         VARCHAR (64)     NOT NULL UNIQUE
-);
-
-CREATE TABLE Brand         (
-    Id           INTEGER          PRIMARY KEY,        
-    Name         VARCHAR (64)     NOT NULL UNIQUE
-);
-
-CREATE TABLE Cars (
-    Id           INTEGER          PRIMARY KEY,   
-    Name         VARCHAR (64)     NOT NULL,
-    BrandId      INTEGER          REFERENCES Brand (Id) ON DELETE CASCADE,
-    CategoriesId INTEGER          REFERENCES Brand (Id) ON DELETE CASCADE
+CREATE TABLE users (
+    id           SERIAL           PRIMARY KEY,
+    login        VARCHAR (64)     NOT NULL UNIQUE,
+    password     VARCHAR (64)     NOT NULL,	
+    name         VARCHAR (64)     NOT NULL UNIQUE,
+    role_id      INTEGER          REFERENCES roles (id) ON DELETE SET NULL,
+    coupon_id    INTEGER          REFERENCES coupons (id) ON DELETE SET NULL
 );
 
 
-CREATE TABLE Orders (
-    Id           INTEGER          PRIMARY KEY ,        
-    UserId       INTEGER          REFERENCES Users (Id) ON DELETE SET NULL
+CREATE TABLE providers (
+    user_ptr_id  INTEGER          PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE
 );
 
 
-CREATE TABLE Reviews (
-    Id           INTEGER          PRIMARY KEY ,        
-    Text         VARCHAR (1024)   NOT NULL,
-    CarId        INTEGER          REFERENCES  Cars (Id) ON DELETE CASCADE,
-    UserId       INTEGER          REFERENCES Users (Id) ON DELETE CASCADE
+CREATE TABLE carts (
+    id           SERIAL           PRIMARY KEY,        
+    user_id      INTEGER          NOT NULL UNIQUE REFERENCES users (id) ON DELETE CASCADE
 );
 
 
-CREATE TABLE ProvidersCars (
-    Id           INTEGER          PRIMARY KEY ,      
-    ProviderId   INTEGER          REFERENCES Providers (UserPtr) ON DELETE CASCADE,
-    CarId       INTEGER          REFERENCES Cars (Id) ON DELETE CASCADE,
-
-    UNIQUE (ProviderId, CarId)
+CREATE TABLE categories (
+    id           SERIAL           PRIMARY KEY,        
+    name         VARCHAR (64)     NOT NULL UNIQUE
 );
 
 
-CREATE TABLE OrdersCar (
-    Id           INTEGER          PRIMARY KEY ,      
-    OrderId      INTEGER          REFERENCES Orders (Id) ON DELETE CASCADE,
-    CarId        INTEGER          REFERENCES Cars (Id) ON DELETE CASCADE,
-    Count        INTEGER          NOT NULL DEFAULT 1,
-
-    UNIQUE (OrderId, CarId)
+CREATE TABLE authors (
+    id           SERIAL           PRIMARY KEY,        
+    name         VARCHAR (64)     NOT NULL UNIQUE
 );
 
 
 
-CREATE TABLE CartsCar (
-    Id           INTEGER          PRIMARY KEY ,      
-    CartId       INTEGER          REFERENCES Carts (Id) ON DELETE CASCADE,
-    CarId        INTEGER          REFERENCES Cars (Id) ON DELETE CASCADE,
-    Count        INTEGER          NOT NULL DEFAULT 1,
+CREATE TABLE books (
+    id           SERIAL           PRIMARY KEY,   
+    title        VARCHAR (64)     NOT NULL,
+    author_id    INTEGER          REFERENCES authors (id) ON DELETE CASCADE,
+    price        REAL             NOT NULL
+);
 
-    UNIQUE (CartId, CarId)
+
+
+
+CREATE TABLE orders (
+    id           SERIAL           PRIMARY KEY,        
+    user_id      INTEGER          REFERENCES users (id) ON DELETE SET NULL
+);
+
+
+CREATE TABLE reviews (
+    id           SERIAL           PRIMARY KEY,        
+    text         VARCHAR (1024)   NOT NULL,
+    book_id      INTEGER          REFERENCES books (id) ON DELETE CASCADE,
+    user_id      INTEGER          REFERENCES users (id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE providers_books (
+    id           SERIAL           PRIMARY KEY,      
+    provider_id  INTEGER          REFERENCES providers (user_ptr_id) ON DELETE CASCADE,
+    book_id      INTEGER          REFERENCES books (id) ON DELETE CASCADE,
+
+    UNIQUE (provider_id, book_id)
+);
+
+
+CREATE TABLE orders_books (
+    id           SERIAL           PRIMARY KEY,      
+    order_id     INTEGER          REFERENCES orders (id) ON DELETE CASCADE,
+    book_id      INTEGER          REFERENCES books (id) ON DELETE CASCADE,
+    count        INTEGER          NOT NULL DEFAULT 1,
+
+    UNIQUE (order_id, book_id)
+);
+
+
+CREATE TABLE books_categories (
+    id           SERIAL           PRIMARY KEY,    
+    book_id      INTEGER          REFERENCES books (id) ON DELETE CASCADE,
+    category_id  INTEGER          REFERENCES categories (id) ON DELETE CASCADE,
+
+    UNIQUE (category_id, book_id)
+);
+
+
+
+CREATE TABLE carts_books (
+    id           SERIAL           PRIMARY KEY,      
+    cart_id      INTEGER          REFERENCES carts (id) ON DELETE CASCADE,
+    book_id      INTEGER          REFERENCES books (id) ON DELETE CASCADE,
+    count        INTEGER          NOT NULL DEFAULT 1,
+
+    UNIQUE (cart_id, book_id)
 );

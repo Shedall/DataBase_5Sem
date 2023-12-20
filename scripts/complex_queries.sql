@@ -1,206 +1,236 @@
---Select all Cars wiht it's brand name.
+--Select all books wiht it's author name.
 SELECT 
-    b.Id, 
-    b.Name, 
-    a.Name AS brand_name
+    b.id, 
+    b.title, 
+    a.name AS author_name
 
-    FROM Cars b 
-    LEFT JOIN Brand a ON b.brandId = a.Id;
+    FROM books b 
+    LEFT JOIN authors a ON b.author_id = a.id;
 
 
---Select Cars by a specific brand.
+--Select books by a specific author.
 SELECT
-    b.Id,
-    b.Name
+    b.id,
+    b.title
 
-    FROM Cars b 
-    LEFT JOIN Brand a ON b.brandId = a.Id
+    FROM books b 
+    LEFT JOIN authors a ON b.author_id = a.id
     
-    WHERE LOWER(a.Name) = LOWER("car brend");--mercedes
+    WHERE LOWER(a.name) = LOWER('Author name');
     
 
-
---Select Cars by a specific Categories.
-SELECT
-    b.Id,
-    b.Name
-
-    FROM Cars b 
-    JOIN Categories a ON b.CategoriesId = a.Id
-    
-    WHERE LOWER(a.Name) = LOWER("Categories name");--Sedan
-
-
---Select users that have specific car in a cart.
+--Select categories by a specific book.
 SELECT 
-    u.Id,
-    u.Name,
-    u.Login     
+    c.id,
+    c.name
+       
+    FROM books_categories bc
+    JOIN books b ON bc.book_id = b.id AND b.id = 'Book id'
+    JOIN categories c ON bc.category_id = c.id;   
+
+
+--Select users that have specific book in a cart.
+SELECT 
+    u.id,
+    u.name,
+    u.login     
      
-    FROM CartsCar cb
-    JOIN Cars b ON cb.carId = b.Id AND b.Id = "car id"--2
-    JOIN Carts c ON cb.CartId = c.Id
-    JOIN Users u ON c.UserId = u.Id;
-    
+    FROM carts_books cb
+    JOIN books b ON cb.book_id = b.id AND b.id = 'Book id'
+    JOIN carts c ON cb.cart_id = c.id
+    JOIN users u ON c.user_id = u.id;
 
---Select all Cars from specific user cart.
+
+--Select all books from specific user cart.
 SELECT 
-    b.Id,
-    b.Name,
-    a.Name AS brand_name
+    b.id,
+    b.title,
+    a.name AS author_name
     
-    FROM CartsCar cb
-    JOIN Carts c ON cb.CartId = c.Id
-    JOIN Users u ON c.UserId = u.Id AND LOWER(u.Name) = LOWER("user name")--Peter
-    JOIN Cars b ON cb.carId = b.Id
-    LEFT JOIN Brand a ON b.brandId = a.Id;
+    FROM carts_books cb
+    JOIN carts c ON cb.cart_id = c.id
+    JOIN users u ON c.user_id = u.id AND LOWER(u.name) = LOWER('User name')
+    JOIN books b ON cb.book_id = b.id
+    LEFT JOIN authors a ON b.author_id = a.id;
 
 
---Select users that have specific car in orders.
+--Select users that have specific book in orders.
 SELECT 
-    u.Id,
-    u.Name,
-    u.Login     
+    u.id,
+    u.name,
+    u.login     
      
-    FROM OrdersCar ob
-    JOIN Cars b ON ob.carId = b.Id AND b.Id = "car id"--3,4
-    JOIN Orders o ON ob.OrderId = o.Id
-    JOIN Users u ON o.UserId = u.Id;
-    
+    FROM orders_books ob
+    JOIN books b ON ob.book_id = b.id AND b.id = 'Book id'
+    JOIN orders o ON ob.order_id = o.id
+    JOIN users u ON o.user_id = u.id;
 
---Select Cars that was ordered by specific user.
+
+--Select books that was ordered by specific user.
 SELECT 
-    b.Id,
-    b.Name,
-    a.Name AS brand_name
+    b.id,
+    b.title,
+    a.name AS author_name
     
-    FROM OrdersCar ob
-    JOIN Orders o ON ob.OrderId = o.Id
-    JOIN Users u ON o.UserId = u.Id AND LOWER(u.Name) = LOWER("User name")--Peter
-    JOIN Cars b ON ob.carId = b.Id 
-    LEFT JOIN Brand a ON b.brandId = a.Id;
+    FROM orders_books ob
+    JOIN orders o ON ob.order_id = o.id
+    JOIN users u ON o.user_id = u.id AND LOWER(u.name) = LOWER('User name')
+    JOIN books b ON ob.book_id = b.id 
+    LEFT JOIN authors a ON b.author_id = a.id;
 
 
 --Select all providers
 SELECT
-    u.Id, 
-    u.Name, 
-    u.Login  
+    u.id,
+    u.name,
+    u.login  
     
-    FROM Users u 
-    WHERE Id IN (SELECT p.UserPtr FROM Providers p);
-    
+    FROM users u 
+    WHERE id IN (SELECT p.user_ptr_id FROM providers p);
 
 
---Select providers by specific car.
+
+--Select providers by specific book.
 SELECT 
-    u.Id,
-    u.Name,
-    u.Login  
+    u.id,
+    u.name,
+    u.login  
     
-    FROM ProvidersCars pb
-    JOIN Cars b ON pb.carId = b.Id AND b.Id = "car id" --2
-    JOIN Users u ON pb.ProviderId = u.Id; 
+    FROM providers_books pb
+    JOIN books b ON pb.book_id = b.id AND b.id = 'Book id' 
+    JOIN users u ON pb.provider_id = u.id;
+
+
+--Select books that providered by special provider.
+SELECT 
+    b.id,
+    b.title,
+    a.name AS author_name
     
-    
+    FROM providers_books pb
+    JOIN users u ON pb.provider_id = u.id AND LOWER(u.name) = LOWER('Provider name')
+    JOIN books b ON pb.book_id = b.id            
+    LEFT JOIN authors a ON b.author_id = a.id;
+
 --Select coupons of specific user.
 SELECT 
-    c.Id,
-    c.Discount
+    c.id,
+    c.discount
     
-    FROM Coupons c
-    JOIN Users u ON u.CouponId = c.Id AND LOWER(u.Name) = LOWER("User name");--Peter
+    FROM coupons c
+    JOIN users u ON u.coupon_id = c.id AND LOWER(u.name) = LOWER('User name');
 
 --Select users by role.
 SELECT 
-    u.Id,
-    u.Name,
-    u.Login    
+    u.id,
+    u.name,
+    u.login    
     
-    FROM Users u
-    JOIN Roles r ON u.RoleId = r.Id AND LOWER(r.Name) = LOWER("Role name");--Customer
-    
+    FROM users u
+    JOIN roles r ON u.role_id = r.id AND LOWER(r.name) = LOWER('Role name');
+
 
 --Select user role.
 SELECT
-    r.Id,
-    r.Name
-    
-    FROM Roles r
-    JOIN Users u ON u.RoleId = r.Id AND LOWER(u.Name) = LOWER("User name");--Peter, SuperAdmin
-    
+    r.id,
+    r.name
 
---Select all reviews by specific car.
+    FROM roles r
+    JOIN users u ON u.role_id = r.id AND LOWER(u.name) = LOWER('User name');
+
+
+--Select all reviews by specific book.
 SELECT 
-    r.Id,
-    r.Text
+    r.id,
+    r.text
     
-    FROM Reviews r
-    JOIN Cars b ON r.carId = b.Id AND b.Id = "car id";--2
-    
+    FROM reviews r
+    JOIN books b ON r.book_id = b.id AND b.id = 'Book id';
+
 
 --Select all reviews by specific user.
 SELECT 
-    r.Id,
-    r.Text
+    r.id,
+    r.text
     
-    FROM Reviews r
-    JOIN Users u ON r.UserId = u.Id AND LOWER(u.Name) = LOWER("User name");--Peter
+    FROM reviews r
+    JOIN users u ON r.user_id = u.id AND LOWER(u.name) = LOWER('User name');
 
-    
 
---Select count of orders of every car.
+--Select average price for every category.
 SELECT
-    b.Id, 
-    b.Name, 
-    a.Name AS brand_name,
-    SUM(ob.Count) AS orders_count
-
-    FROM Cars b 
-    LEFT JOIN Brand a ON b.brandId = a.Id
-    LEFT JOIN OrdersCar ob ON ob.carId = b.Id
+    c.id,
+    c.name,
+    AVG(b.price) as average_price
     
-    GROUP BY b.Id;
+    FROM books_categories bc
+    JOIN books b ON bc.book_id = b.id
+    JOIN categories c ON bc.category_id = c.id
+    
+    GROUP BY bc.category_id;
 
 
---Select Cars that are in the cart of at least 1 users.
+--Select count of orders of every book.
 SELECT
-    b.Id, 
-    b.Name, 
-    a.Name AS brand_name,
-    SUM(cb.Count) AS in_cart_count
+    b.id,
+    b.title,
+    a.name AS author_name,
+    SUM(ob.count) AS orders_count
 
-    FROM Cars b 
-    LEFT JOIN Brand a ON b.brandId = a.Id
-    LEFT JOIN CartsCar cb ON cb.carId = b.Id
+    FROM books b 
+    LEFT JOIN authors a ON b.author_id = a.id
+    LEFT JOIN orders_books ob ON ob.book_id = b.id
     
-    GROUP BY b.Id 
-    HAVING SUM(cb.Count) >= 1;
+    GROUP BY b.id, a.name;
 
 
---Select all persons names.(show union)
-SELECT u.Name FROM Users u
+--Select books that are in the cart of at least two users.
+SELECT
+    b.id,
+    b.title,
+    a.name AS author_name,
+    SUM(cb.count) AS in_cart_count
+
+    FROM books b 
+    LEFT JOIN authors a ON b.author_id = a.id
+    LEFT JOIN carts_books cb ON cb.book_id = b.id
+    
+    GROUP BY b.id, a.name
+    HAVING SUM(cb.count) >= 2;
+
+
+--Select all persons names.
+SELECT u.name FROM users u
 UNION 
-SELECT a.Name FROM Brand a;
+SELECT a.name FROM authors a;
 
 
---Select Cars and it's popularity level.
-SELECT b.Id, 
-       b.Name, 
-       a.Name AS brand_name,
+--Select books and it's popularity level.
+SELECT b.id,
+       b.title,
+       a.name AS author_name,
        CASE 
-           WHEN bto.total_ordered > 5 THEN "Super popular"
-           WHEN bto.total_ordered BETWEEN 1 AND 5 THEN "Meadle popular"
-           ELSE "Not popular"
+           WHEN bto.total_ordered > 5 THEN 'Super popular'
+           WHEN bto.total_ordered BETWEEN 2 AND 5 THEN 'Meadle popular'
+           ELSE 'Not popular'
        END AS popularity                          
        
 
-       FROM Cars b
-            LEFT JOIN Brand a ON b.brandId = a.Id
-            JOIN (SELECT ob.carId AS car_id, 
-                         SUM(ob.Count) AS total_ordered 
-                    FROM OrdersCar ob 
-                GROUP BY ob.carId) AS bto
-              ON bto.car_id = b.Id;
-              
-            
+       FROM books b
+            LEFT JOIN authors a ON b.author_id = a.id
+            JOIN (SELECT ob.book_id AS book_id,
+                         SUM(ob.count) AS total_ordered 
+                    FROM orders_books ob 
+                GROUP BY ob.book_id) AS bto
+              ON bto.book_id = b.id;
+
+
+--Select books with max price of it's author book.
+SELECT b.id,
+       b.title,
+       a.name AS author_name,
+       MAX(b.price) OVER (PARTITION BY b.author_id) AS max_price_of_author
+       
+  FROM books b
+       JOIN authors a ON b.author_id = a.id;
+  

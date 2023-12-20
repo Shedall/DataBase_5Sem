@@ -1,2 +1,2 @@
-CREATE INDEX Cars_Name_idx
-ON Cars (Name);    
+CREATE INDEX Books_title_idx
+ON Books (Title);

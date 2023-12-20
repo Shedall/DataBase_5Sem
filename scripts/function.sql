@@ -1,14 +1,16 @@
-CREATE OR REPLACE FUNCTION select_car_by_category(category_name varchar(64)) 
-RETURNS TABLE(id INTEGER, name Varchar(64)) AS $$
+CREATE OR REPLACE FUNCTION select_books_by_user_cart(_user_id int) 
+RETURNS TABLE(id INTEGER, image VARCHAR(64),price REAL,title VARCHAR(64),count INTEGER) AS $$
 BEGIN
   RETURN QUERY SELECT
-  
-    b.Id,
-    b.Name
-
-    FROM Cars b 
-    JOIN Categories a ON b.categories_id = a.Id
+    b.id,
+ b.image,
+ b.price,
+    b.title,
+ cb.count
     
-    WHERE LOWER(a.Name) = LOWER(category_name);
+    FROM carts_books cb
+    JOIN carts c ON cb.cart_id = c.id
+    JOIN users u ON c.user_id = u.id AND u.id = _user_id
+    JOIN books b ON cb.book_id = b.id;
 END;
 $$ LANGUAGE plpgsql;

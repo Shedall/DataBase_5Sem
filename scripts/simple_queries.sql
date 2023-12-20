@@ -1,22 +1,22 @@
---Select all brands.
-SELECT a.Id , a.Name FROM Brand a;
+--Select all authors.
+SELECT a.id , a.name FROM Authors a;
 
 
 --Select all categories.
-SELECT c.Id, c.Name FROM Categories c;
+SELECT c.id, c.name FROM categories c;
     
 
 --Select all users
-SELECT u.Id, u.Name, u.Login FROM Users u;
+SELECT u.id, u.name, u.login FROM users u;
     
 
 --Select all coupons.
-SELECT c.Id, c.Discount FROM Coupons c ORDER BY c.Discount DESC;
+SELECT c.id, c.discount FROM coupons c ORDER BY c.discount DESC;
     
 
 --Select coupons that has discound in cpecific range.
-SELECT c.Id, c.Discount FROM Coupons c WHERE c.Discount BETWEEN 11 AND 13;
+SELECT c.id, c.discount FROM coupons c WHERE c.discount BETWEEN 'Start' AND 'Finish';
 
 
 --Select all roles.
-SELECT r.Id, r.Name FROM Roles r;
+SELECT r.id, r.name FROM roles r;

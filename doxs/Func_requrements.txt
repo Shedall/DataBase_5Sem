@@ -1,13 +1,13 @@
 User roles
 
 User
-add reviews to Car, add Cars to own cart choosing a provider and crate order from products inside his/her cart, serch in parametrs
+add reviews to book, add books to own cart choosing a provider and crate order from products inside his/her cart
 
 Provider
-CRUD own products list (Cars that he/she provided)
+CRUD own products list (books that he/she provided)
 
 Admin
-CRUD Cars, users, orders, reviews, categories and authors, can add coupons to users
+CRUD books, users, orders, reviews, categories and authors, can add coupons to users
 that add discount to all buys
 
 

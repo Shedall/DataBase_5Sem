@@ -3,7 +3,8 @@ User:
 + Login:        varchar(64)
 + Password:     varchar(64)
 + Name:         varchar(64)
-+ RoleId:                     <fk ->(OTM) Role>
++ RoleId:                     <fk -> Role>
++ CouponId:                   <fk -> Coupon>
 
 
 Role:
@@ -13,40 +14,67 @@ Role:
 
 Cart:
 + Id:           int           <pk>
-+ UserId                      <fk ->(OTO) User>     
++ UserId                      <fk -> User>     
 
 
 Provider:
-+ UserPtr                     <pk> & <fk ->(OTM) User>
-
++ UserPtr                     <pk> & <fk -> User>
 
 
 Coupon:
 + Id:           int           <pk> 
-+ Discount:     number        
++ Discount:     number(2)        
 
 
-Car:
+Category:
++ Id:           int           <pk> 
++ Name:         varchar(64)      
+
+
+Book:
 + Id:           int           <pk> 
 + Title:        varchar(64)
-+ BrandId:                    <fk ->(OTM) Author>
-+ CategoryId:                 <fk ->(OTM) Category>
++ AuthorId:                   <fk -> Author>
 
-Categoty:
-+Id :       int           <pk>
-+Name
+
+Author:
++ Id            int           <pk>
++ Name:         varchar(64)
+
 
 Order:
 + Id:           int           <pk> 
-+ Count:        number
-+ CarId:                      <fk ->(OTM) Car>
-+ UserId:                     <fk ->(OTM) User>
-
++ UserId:                     <fk -> User>
 
 
 Review:
 + Id:           int           <pk> 
 + Title:        varchar
 + Text:         varchar          
-+ CarId:                      <fk ->(OTM) Car>
-+ UserId:                     <fk ->(OTM) User>
++ BookId:                     <fk -> Book>
++ UserId:                     <fk -> User>
+
+
+ProviderBook:
++ Id:           int           <pk> 
++ ProviderId:                 <fk -> Provider>
++ BookId:                     <fk -> Book>
+
+
+OrderBook:
++ Id:           int           <pk> 
++ OrderId:                    <fk -> Order>
++ BookId:                     <fk -> Book>
++ Count:        int
+
+
+CategoryBook:
++ Id:           int           <pk> 
++ CategoryId:                 <fk -> Category>
++ BookId:                     <fk -> Book>
+
+
+CartBook:
++ Id:           int           <pk> 
++ CartId:                     <fk -> Cart>
++ BookId:                     <fk -> Book>

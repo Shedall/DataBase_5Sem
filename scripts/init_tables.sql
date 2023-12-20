@@ -1,22 +1,22 @@
-INSERT INTO Coupons (discount) VALUES 
+INSERT INTO coupons (discount) VALUES
 (10.5), 
 (11.8), 
 (20.1);
 
 
-INSERT INTO Roles (Name) VALUES
+INSERT INTO roles (name) VALUES
 ('Customer'),
 ('Admin');
 
 
-INSERT INTO Brand (Name) VALUES
-('BMW'),
-('MERCEDES'),
-('RANGEROVER'),
-('PORSCHE');
+INSERT INTO authors (name) VALUES
+('Alex Maliarniy'),
+('Kriss Whell'),
+('Pavel Umnov'),
+('Stella Jhonson');
 
 
-INSERT INTO Users (Login, Password, Name, role_id, coupon_id) VALUES
+INSERT INTO users (login, password, name, role_id, coupon_id) VALUES
 ('Log1', 'Pass1', 'Jhon', 1, NULL),
 ('Log2', 'Pass2', 'Peter', 1, 2),
 ('Log3', 'Pass3', 'Bob', 1, 1),
@@ -24,60 +24,65 @@ INSERT INTO Users (Login, Password, Name, role_id, coupon_id) VALUES
 ('Log5', 'Pass5', 'SuperAdmin', 2, NULL);
 
 
-INSERT INTO Providers (user_ptr_id) VALUES
+INSERT INTO providers (user_ptr_id) VALUES
 (3),
 (4);
 
 
-INSERT INTO Categories (Name) VALUES
-('Sedan'),
-('Limousine'),
-('Pickup truck'),
-('Hatchback'),
-('Station wagon'),
-('Minivan'),
-('Compartment'),
-('Convertible'),
-('Roadster'),
-('crossover'),
-('SUVs');
+INSERT INTO categories (name) VALUES
+('Detective'),
+('Sci-fi'),
+('Western'),
+('Fairy tale');
 
 
-INSERT INTO Cars (Name, brand_id, categories_id) VALUES
-('7-series', 1,1),
-('S-class', 2, 1),
-('disvovery', 3, 4),
-('918', 4, 3);
+INSERT INTO books (title, author_id, price) VALUES
+('When pigs fly', 2, 120),
+('Crumpled Fairy', 1, 150),
+('Forgotten', 3, 90),
+('Fall night', 2, 200),
+('First of Mahikans', 3, 150);
 
 
-INSERT INTO Reviews (Text, car_id, user_id) VALUES
-('I like it. The best of the  best.', 1, 1),
-('0 from 10', 2, 2),
-('Nothing', 4, 3);
+INSERT INTO reviews (text, book_id, user_id) VALUES
+('I like it. The best of the  best.', 2, 1),
+('0 from 10.', 3, 2),
+('Nothing', 3, 3);
 
 
-INSERT INTO Orders (user_id) VALUES
+INSERT INTO orders (user_id) VALUES
 (1),
 (2),
 (3);
 
 
-INSERT INTO Carts (user_id) VALUES
+INSERT INTO carts (user_id) VALUES
 (1),
 (2),
 (3),
 (5);
 
 
-INSERT INTO CartsCar (cart_id, car_id) VALUES
-(4, 2), 
-(2, 4), (3, 4);
+INSERT INTO carts_books (cart_id, book_id) VALUES
+(1, 1), (1, 3), (1, 4),
+(2, 1), (2, 5),
+(3, 2), (3, 4);
 
 
-INSERT INTO OrdersCar (order_id, car_id) VALUES
-(2,3),(3,4);
+INSERT INTO books_categories (book_id, category_id) VALUES
+(1, 4), (1, 1),
+(2, 4),
+(3, 2), (3, 3),
+(4, 1),
+(5, 3);
 
 
-INSERT INTO Providerscars (provider_id, car_id) VALUES
-(3, 1), (3, 4),
-(4, 2), (4, 3), (4, 4);
+INSERT INTO orders_books (order_id, book_id) VALUES
+(1, 1), (1, 3),
+(2, 4), (2, 5),
+(3, 2), (3, 3), (3, 4);
+
+
+INSERT INTO providers_books (provider_id, Book_id) VALUES
+(3, 1), (3, 4), (3, 5),
+(4, 2), (4, 3), (4, 4), (4, 5);
